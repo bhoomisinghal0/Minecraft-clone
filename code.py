@@ -5,6 +5,20 @@ app = Ursina()
 
 # Setup player and environment
 player = FirstPersonController()
+# Create a tiny crosshair in the center of the screen
+crosshair_center = Entity(parent=camera.ui)      # Attach it to the UI layer so it stays locked to the screen
+crosshair_vertical= Entity(
+    model="quad",
+    colour=color.gray,
+    scale=(0.004,0.1),
+    parent=crosshair_center
+)
+crosshair_horizontal=Entity(
+    model="quad",
+    color=color.gray,
+    scale=(0.1,0.004),
+    parent=crosshair_center
+)
 Sky()
 
 boxes = []
