@@ -22,6 +22,11 @@ crosshair_horizontal=Entity(
 Sky()
 
 boxes = []
+def update():
+    # If the player falls below the world (Y coordinate less than -10)
+    if player.y < -10:
+        player.position = (10, 3, 10) # Teleport them safely to the middle of the map
+
 
 # Generate the initial grid
 for i in range(20):
