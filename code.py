@@ -9,7 +9,7 @@ player = FirstPersonController()
 crosshair_center = Entity(parent=camera.ui)      # Attach it to the UI layer so it stays locked to the screen
 crosshair_vertical= Entity(
     model="quad",
-    colour=color.gray,
+    color=color.gray,
     scale=(0.004,0.1),
     parent=crosshair_center
 )
@@ -22,6 +22,11 @@ crosshair_horizontal=Entity(
 Sky()
 
 boxes = []
+# Track the current active texture name
+current_texture = 'grass'
+   
+
+
 def update():
     # If the player falls below the world (Y coordinate less than -10)
     if player.y < -10:
@@ -35,7 +40,7 @@ for i in range(20):
             color=color.white,
             model='cube',
             position=(j, 0, i),
-            texture='grass',     # Extention (.png) can be omitted in Ursina
+            texture=current_texture,     # Extention (.png) can be omitted in Ursina
             parent=scene,
             origin_y=0.5,
             collider='box'       # REQUIRED: Allows mouse hovering to work
@@ -44,6 +49,15 @@ for i in range(20):
 
 # Handle block placement and destruction
 def input(key):
+    global current_texture # Tell Python we want to change the variable we made above
+    
+    # Switch texture based on number keys pressed
+    if key == '1':
+        current_texture = 'grass'
+    if key == '2':
+        current_texture = 'white_cube' # Built-in Ursina texture that looks like smooth stone/plaster
+    if key == '3':
+        current_texture = 'brick'      # Built-in Ursina red brick texture
     for box in boxes:
         if box.hovered:
             if key == 'left mouse down':
@@ -51,7 +65,8 @@ def input(key):
                     color=color.white,
                     model='cube',
                     position=box.position + mouse.normal,
-                    texture='grass',
+                    # Find this line inside your left-click code block:
+                    texture=current_texture, # FIXED: Uses whatever texture is currently active
                     parent=scene,
                     origin_y=0.5,
                     collider='box' # REQUIRED: Allows interaction with new blocks
